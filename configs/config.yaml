@@ -1,0 +1,26 @@
+train_dataset:
+  path: /home/wit627/ccshao/lama/celeba-hq-dataset/train_256
+  batch_size: 8
+
+val_dataset:
+  paths:
+    medium: /home/wit627/ccshao/lama/celeba-hq-dataset/val_256/random_medium_256
+    thick: /home/wit627/ccshao/lama/celeba-hq-dataset/val_256/random_thick_256
+    thin: /home/wit627/ccshao/lama/celeba-hq-dataset/val_256/random_thin_256
+  batch_size: 8
+
+visualizer:
+  save_path: sample
+
+checkpoint_kwargs:
+  verbose: True
+  save_top_k: 5
+  save_last: True
+  monitor: val_ssim_fid100_f1_total_mean
+  mode: max
+
+log:
+  tensorboard_logger_path: /home/wit627/ccshao/Inpating/logs
+defaults:
+  - hydra: overrides
+  - _self_
