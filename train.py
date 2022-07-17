@@ -2,6 +2,7 @@ import logging
 import os
 
 import hydra
+import torch.cuda
 from omegaconf import OmegaConf
 from pytorch_lightning import Trainer
 from pytorch_lightning.callbacks import ModelCheckpoint
@@ -25,11 +26,13 @@ def main(config):
     training_model=InpatingModule(config)
 
     checkpoint_kwargs=config['checkpoint_kwargs']
+    train_kwargs=config['train_kwargs']
     trainer = Trainer(
         # there is no need to suppress checkpointing in ddp, because it handles rank on its own
         callbacks=ModelCheckpoint(dirpath=checkpoints_dir, **checkpoint_kwargs),
         logger=metrics_logger,
         default_root_dir=os.getcwd(),
+        **train_kwargs
     )
     trainer.fit(training_model,datamodule=DataModule(config))
 if __name__ == '__main__':

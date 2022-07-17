@@ -1,15 +1,16 @@
 import glob
 import os
-
+import logging
 from torch.utils.data import Dataset
 import cv2
+LOGGER=logging.getLogger(__name__)
 
 class ValDataset(Dataset):
     def __init__(self, indir):
         self.datadir = indir
         self.mask_filenames = sorted(list(glob.glob(os.path.join(self.datadir, '*mask*.png'), recursive=True)))
         self.img_filenames = [fname.replace('_mask000','') for fname in self.mask_filenames]
-
+        LOGGER.info('ValDataset Init Done')
     def __len__(self):
         return len(self.mask_filenames)
 

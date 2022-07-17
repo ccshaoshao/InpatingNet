@@ -1,17 +1,18 @@
 import glob
+import logging
 import os
 import cv2
 from torch.utils.data import Dataset
 
 from src.dataModule.Mask_Generator import Mask_Generator
-
+LOGGER = logging.getLogger(__name__)
 
 class TrainDataset(Dataset):
     def __init__(self, indir):
         self.in_files = list(glob.glob(os.path.join(indir, '**', '*.jpg'), recursive=True))
         self.mask_generator = Mask_Generator()
         self.index = 0
-
+        LOGGER.info('TrainDataset Init Done')
     def __len__(self):
         return len(self.in_files)
 

@@ -1,10 +1,13 @@
+import logging
+
 import numpy as np
 import cv2
+LOGGER = logging.getLogger(__name__)
 
 class Mask_Generator:
     def __init__(self):
         self.draw_types=['line','circle','square']
-
+        LOGGER.info('Mask_Generator Init Done')
     def irregular_mask(self,width,height):
         mask = np.zeros((height, width), np.float32)
         times=np.random.randint(0,11)
