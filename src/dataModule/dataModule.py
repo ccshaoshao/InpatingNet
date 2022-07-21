@@ -18,14 +18,16 @@ class DataModule(LightningDataModule):
     def train_dataloader(self):
         path=self.train_dataset_config['path']
         batch_size=self.train_dataset_config['batch_size']
-        return DataLoader(TrainDataset(path),batch_size=batch_size)
+        num_workers=self.train_dataset_config['num_workers']
+        return DataLoader(TrainDataset(path),batch_size=batch_size,num_workers=num_workers)
 
     def val_dataloader(self):
         paths=self.val_dataset_config['paths']
         batch_size=self.val_dataset_config['batch_size']
+        num_workers=self.val_dataset_config['num_workers']
         loaders={}
         for key in paths:
             path=paths[key]
-            loaders[key]= DataLoader(ValDataset(path),batch_size=batch_size)
+            loaders[key]= DataLoader(ValDataset(path),batch_size=batch_size,num_workers=num_workers)
         combined_loaders = CombinedLoader(loaders)
         return combined_loaders

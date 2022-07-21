@@ -1,6 +1,8 @@
 import glob
 import os
 import logging
+
+import numpy as np
 from torch.utils.data import Dataset
 import cv2
 LOGGER=logging.getLogger(__name__)
@@ -15,9 +17,17 @@ class ValDataset(Dataset):
         return len(self.mask_filenames)
 
     def __getitem__(self, i):
-        item = dict(image=cv2.imread(self.img_filenames[i]),
-                      mask=cv2.imread(self.mask_filenames[i]))
-        # cv2.imshow('image',item['image'])
-        # cv2.imshow('mask',item['mask'])
-        # cv2.waitKey(0)
+        img=cv2.imread(self.img_filenames[i])
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+        img = np.transpose(img, (2, 0, 1))
+        img = img.astype("float32") / 255
+        #
+        mask = cv2.imread(self.mask_filenames[i])
+        if len(mask.shape) == 2:
+            mask = mask[:, :, np.newaxis]
+        mask = np.transpose(mask, (2, 0, 1))
+        mask = mask.astype("float32") / 255
+        item = dict(image=img,
+                      mask=mask)
+
         return item
