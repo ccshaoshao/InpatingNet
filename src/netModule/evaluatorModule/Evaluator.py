@@ -277,7 +277,8 @@ class InpaintingEvaluator(nn.Module):
         """
         result = {}
         with torch.no_grad():
-            image_batch, mask_batch, inpainted_batch = batch[self.image_key], batch['mask'], batch[self.inpainted_key]
+            print(batch)
+            image_batch, mask_batch, inpainted_batch = batch['image'], batch['mask'], batch['inpainted']
             if self.clamp_image_range is not None:
                 image_batch = torch.clamp(image_batch,
                                           min=self.clamp_image_range[0],
